@@ -5,6 +5,14 @@
     "version": "1.0",
     "blt_version": 3,
     "priority": 1,
+    "updates": [
+        {
+            "identifier": "qol-tweaks",
+            "host": {
+                "meta": "https://raw.githubusercontent.com/Luxarx/QoL-Tweaks/refs/heads/main/meta.json"
+            }
+        }
+    ],
     "hooks": [
         {
             "hook_id": "lib/managers/menumanager",
