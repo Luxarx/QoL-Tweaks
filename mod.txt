@@ -2,7 +2,7 @@
     "name": "Quality of Life Tweaks",
     "description": "Toggle skipping certain confim dialogs",
     "author": "its ya boi lurax",
-    "version": "1.0",
+    "version": "1.1",
     "blt_version": 3,
     "priority": 1,
     "updates": [
@@ -20,6 +20,10 @@
         },
         {
             "hook_id": "lib/managers/enemymanager",
+            "script_path": "main.lua"
+        },
+        {
+            "hook_id": "lib/units/weapons/grenades/concussiongrenade"
             "script_path": "main.lua"
         }
     ]

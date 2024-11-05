@@ -9,6 +9,8 @@
 	"QolTweaks_briefing_buyasset_desc": "buy that ASS(et)",
 	"QolTweaks_briefing_buyall_name": "Buy All Assets in Briefing",
 	"QolTweaks_briefing_buyall_desc": "just go press ready",
+	"QolTweaks_preplanning_rebuy_name": "Re-Buy Preplanning Assets",
+	"QolTweaks_preplanning_rebuy_desc": "just goooooooooo press reeeeeaaady",
 	"QolTweaks_masks_buy_name": "Buy Mask",
 	"QolTweaks_masks_buy_desc": "Put on your masks",
 	"QolTweaks_masks_buyslot_name": "Buy Inventory Mask Slot",
@@ -21,10 +23,16 @@
 	"QolTweaks_weapons_buyslot_desc": "That magical place where your guns go",
 	"QolTweaks_weapons_mod_name": "Weapon Modding and Attachments",
 	"QolTweaks_weapons_mod_desc": "Walmart AR-15 Addons",
+	"QolTweaks_weapons_buymod_name": "Buy Weapon Mods and Attachments",
+	"QolTweaks_weapons_buymod_desc": "Walmart Checkout",
 	"QolTweaks_weapons_cosmetics_name": "Weapon Skins",
 	"QolTweaks_weapons_cosmetics_desc": "slayyy yas queen",
 	"QolTweaks_cleaner_name": "Shield Cleaner",
 	"QolTweaks_cleaner_desc": "pls i cant see anyting",
-	"QolTweaks_cleaner_time_limit_name": "Despawn Timer"
-	"QolTweaks_cleaner_time_limit_desc": "How fast they bouta dip"
+	"QolTweaks_cleaner_time_limit_name": "Seconds until shield despawn",
+	"QolTweaks_cleaner_time_limit_desc": "",
+	"QolTweaks_fuse_timer_name": "Concussion Grenade Fuse Timer",
+	"QolTweaks_fuse_timer_desc": "",
+	"QolTweaks_fuse_timer_value_name": "Seconds until detonation",
+	"QolTweaks_fuse_timer_value_desc": "",
 }

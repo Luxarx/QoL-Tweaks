@@ -9,16 +9,20 @@ QolTweaks.settings = {
     crimenet_buybet_toggle = false,
     briefing_buyasset_toggle = false,
     briefing_buyall_toggle = false,
+    preplanning_rebuy_toggle = false,
     weapons_buy_toggle = false,
     weapons_buyslot_toggle = false,
     weapons_mod_toggle = false,
+    weapons_buymod_toggle = false,
     weapons_cosmetics_toggle = false,
     masks_buy_toggle = false,
     masks_buyslot_toggle = false,
     masks_craft_toggle = false,
     cleaner_toggle = false,
     cleaner_show_time = false,
-    cleaner_time_limit = 60
+    cleaner_time_limit = 60,
+    fuse_timer_toggle = false,
+    fuse_timer_value = 1
 }
 
 function QolTweaks:Load()
@@ -100,14 +104,14 @@ if RequiredScript == "lib/managers/menumanager" then
             Utils.PrintTable(QolTweaks.settings, 3)
         end
 
-        MenuCallbackHandler.QolTweaks_on_slider = function(self, item)
-            log(QolTweaks.cleaner_time_limit)
-            log(tonumber(QolTweaks.cleaner_time_limit))
+        MenuCallbackHandler.QolTweaks_slider = function(self, item)
             if item:value() and tonumber(item:value()) then
-                log(math.ceil(tonumber(item:value())))
-                log(item:value())
-                log(tonumber(item:value()))
-                QolTweaks.settings[item:name()] = math.ceil(item:value())
+                local precision = 2
+                local truncated = item:value() * 10 ^ precision
+                truncated = math.floor(truncated + 0.5) / 10 ^ precision
+
+
+                QolTweaks.settings[item:name()] = truncated
                 QolTweaks:Save()
             end
             Utils.PrintTable(QolTweaks.settings)
@@ -142,6 +146,10 @@ if RequiredScript == "lib/managers/menumanager" then
         end
     end
 
+    local function skip_preplanning_rebuy(value)
+        MenuManager.show_confirm_preplanning_rebuy = expect_yes
+    end
+
     local function skip_weapons_buy(value)
         if value then
             MenuManager.show_confirm_blackmarket_buy = expect_yes
@@ -157,6 +165,12 @@ if RequiredScript == "lib/managers/menumanager" then
     local function skip_weapons_mod(value)
         if value then
             MenuManager.show_confirm_blackmarket_mod = expect_yes
+        end
+    end
+
+    local function skip_weapons_buymod(value)
+        if value then
+            MenuManager.show_confirm_blackmarket_weapon_mod_purchase = expect_yes
         end
     end
 
@@ -203,11 +217,15 @@ if RequiredScript == "lib/managers/menumanager" then
     skip_briefing_buyall(briefing_buyall)
 
     --Preplanning
+    local preplanning_rebuy = QolTweaks.settings["preplanning_rebuy_toggle"]
+
+    skip_preplanning_rebuy(preplanning_rebuy)
 
     --Masks and Weapons Inventory
     local weapons_buy = QolTweaks.settings["weapons_buy_toggle"]
     local weapons_buyslot = QolTweaks.settings["weapons_buyslot_toggle"]
     local weapons_mod = QolTweaks.settings["weapons_mod_toggle"]
+    local weapons_buymod = QolTweaks.settings["weapons_buymod_toggle"]
     local weapons_cosmetics = QolTweaks.settings["weapons_cosmetics_toggle"]
     local masks_buy = QolTweaks.settings["masks_buy_toggle"]
     local masks_buyslot = QolTweaks.settings["masks_buyslot_toggle"]
@@ -216,6 +234,7 @@ if RequiredScript == "lib/managers/menumanager" then
     skip_weapons_buy(weapons_buy)
     skip_weapons_buyslot(weapons_buyslot)
     skip_weapons_mod(weapons_mod)
+    skip_weapons_buymod(weapons_buymod)
     skip_weapons_cosmetics(weapons_cosmetics)
 
     skip_masks_buy(masks_buy)
@@ -253,4 +272,16 @@ if RequiredScript == "lib/managers/enemymanager" then
     -- end
 
     --EnemyManager:set_shield_lifetime(QolTweaks.cleaner_time_limit)
+end
+
+if RequiredScript == "lib/units/weapons/grenades/concussiongrenade" then
+    local update = QolTweaks.settings["fuse_timer_toggle"]
+    log("Hooked")
+    if update then
+        Hooks:PostHook(ConcussionGrenade, "_setup_from_tweak_data", "ConcussionGrenadeQolTweaks", function(self, t)
+            self._init_timer = QolTweaks.settings["fuse_timer_value"]
+            log("Registered " .. self._init_timer)
+        end)
+    end
+    log("Post Hook")
 end
