@@ -122,6 +122,10 @@ if RequiredScript == "lib/managers/menumanager" then
         params.yes_func()
     end
 
+    ------------------------------------------------------------------------------------
+    --Crime.NET--
+    ------------------------------------------------------------------------------------
+
     local function skip_crimenet_buyjob(value)
         if value then
             MenuManager.show_confirm_buy_premium_contract = expect_yes
@@ -133,6 +137,16 @@ if RequiredScript == "lib/managers/menumanager" then
             MenuManager.show_confirm_pay_casino_fee = expect_yes
         end
     end
+
+    local crimenet_buyjob = QolTweaks.settings["crimenet_buyjob_toggle"]
+    local crimenet_buybet = QolTweaks.settings["crimenet_buybet_toggle"]
+
+    skip_crimenet_buyjob(crimenet_buyjob)
+    skip_crimenet_buybet(crimenet_buybet)
+
+    ------------------------------------------------------------------------------------
+    --Briefing--
+    ------------------------------------------------------------------------------------
 
     local function skip_briefing_buyasset(value)
         if value then
@@ -146,10 +160,26 @@ if RequiredScript == "lib/managers/menumanager" then
         end
     end
 
+    local briefing_buyasset = QolTweaks.settings["briefing_buyasset_toggle"]
+    local briefing_buyall = QolTweaks.settings["briefing_buyall_toggle"]
+
+    skip_briefing_buyasset(briefing_buyasset)
+    skip_briefing_buyall(briefing_buyall)
+
+    ------------------------------------------------------------------------------------
+    --Preplanning--
+    ------------------------------------------------------------------------------------
     local function skip_preplanning_rebuy(value)
         MenuManager.show_confirm_preplanning_rebuy = expect_yes
     end
 
+    local preplanning_rebuy = QolTweaks.settings["preplanning_rebuy_toggle"]
+
+    skip_preplanning_rebuy(preplanning_rebuy)
+
+    ------------------------------------------------------------------------------------
+    --Masks and Weapons Inventory--
+    ------------------------------------------------------------------------------------
     local function skip_weapons_buy(value)
         if value then
             MenuManager.show_confirm_blackmarket_buy = expect_yes
@@ -198,30 +228,6 @@ if RequiredScript == "lib/managers/menumanager" then
         end
     end
 
-
-
-
-
-    --Crime.net
-    local crimenet_buyjob = QolTweaks.settings["crimenet_buyjob_toggle"]
-    local crimenet_buybet = QolTweaks.settings["crimenet_buybet_toggle"]
-
-    skip_crimenet_buyjob(crimenet_buyjob)
-    skip_crimenet_buybet(crimenet_buybet)
-
-    --Briefing
-    local briefing_buyasset = QolTweaks.settings["briefing_buyasset_toggle"]
-    local briefing_buyall = QolTweaks.settings["briefing_buyall_toggle"]
-
-    skip_briefing_buyasset(briefing_buyasset)
-    skip_briefing_buyall(briefing_buyall)
-
-    --Preplanning
-    local preplanning_rebuy = QolTweaks.settings["preplanning_rebuy_toggle"]
-
-    skip_preplanning_rebuy(preplanning_rebuy)
-
-    --Masks and Weapons Inventory
     local weapons_buy = QolTweaks.settings["weapons_buy_toggle"]
     local weapons_buyslot = QolTweaks.settings["weapons_buyslot_toggle"]
     local weapons_mod = QolTweaks.settings["weapons_mod_toggle"]
