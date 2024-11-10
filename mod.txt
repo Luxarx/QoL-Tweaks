@@ -2,7 +2,7 @@
     "name": "Quality of Life Tweaks",
     "description": "Toggle skipping certain confim dialogs",
     "author": "its ya boi lurax",
-    "version": "1.1",
+    "version": "1.2",
     "blt_version": 3,
     "priority": 1,
     "updates": [
