@@ -133,6 +133,33 @@
             "display_precision": 2
         },
         {
+            "type": "toggle",
+            "id": "protector_toggle",
+            "title": "QolTweaks_protector_name",
+            "description": "QolTweaks_protector_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "protector_toggle"
+        },
+        {
+            "type": "slider",
+            "id": "protector_time_limit",
+            "title": "QolTweaks_protector_time_limit_name",
+            "description": "QolTweaks_protector_time_limit_desc",
+            "callback": "QolTweaks_slider",
+            "value": "protector_time_limit",
+            "max": 3600,
+            "min": 60,
+            "step": 1,
+            "display_precision": 2
+        },
+        {
+            "type": "button",
+            "id": "shield_purge_button",
+            "title": "QolTweaks_shield_purge_name",
+            "description": "QolTweaks_shield_purge_desc",
+            "callback": "QolTweaks_shield_purge"
+        },
+        {
             "type": "divider",
             "size": 32
         },
