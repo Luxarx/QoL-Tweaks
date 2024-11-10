@@ -21,6 +21,9 @@ QolTweaks.settings = {
     cleaner_toggle = false,
     cleaner_show_time = false,
     cleaner_time_limit = 60,
+    protector_toggle = false,
+    protector_show_time = false,
+    protector_time_limit = 60,
     fuse_timer_toggle = false,
     fuse_timer_value = 1
 }
@@ -47,10 +50,8 @@ function QolTweaks:Load()
         for k, v in pairs(data) do
             self.settings[k] = v
         end
+        log("Settings loaded.")
     end
-    log("---------------loaded-----------------")
-    Utils.PrintTable(self.settings)
-    log("--------------------------------------")
 end
 
 function QolTweaks:Save()
@@ -58,6 +59,7 @@ function QolTweaks:Save()
     if file then
         file:write(json.encode(self.settings))
         file:close()
+        log("Settings saved.")
     end
 end
 
@@ -65,15 +67,23 @@ function QolTweaks:getSettings()
     return self.settings
 end
 
+function QolTweaks:getCleaner()
+    return self.settings["cleaner_toggle"]
+end
+
+function QolTweaks:getProtector()
+    return self.settings["protector_toggle"]
+end
+
 function QolTweaks:getCleanerTime()
     return self.settings["cleaner_time_limit"]
 end
 
-log(QolTweaks.settings["cleaner_toggle"])
-log(QolTweaks.settings["cleaner_time_limit"])
+function QolTweaks:getProtectorTime()
+    return self.settings["protector_time_limit"]
+end
+
 QolTweaks:Load()
-log(QolTweaks.settings["cleaner_toggle"])
-log(QolTweaks.settings["cleaner_time_limit"])
 
 MenuHelper:LoadFromJsonFile(QolTweaks.optionsPath, QolTweaks, QolTweaks.settings)
 
@@ -92,16 +102,12 @@ if RequiredScript == "lib/managers/menumanager" then
     Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_QolTweaks", function(menu_manager)
         MenuCallbackHandler.QolTweaks_save = function(self, item)
             QolTweaks:Save()
-            log("Settings saved")
         end
 
         MenuCallbackHandler.QolTweaks_on_toggle = function(self, item)
-            log(item:value())
-            local status = item:value() == "on"
-            log(status)
-            QolTweaks.settings[item:name()] = status
+            log(Utils.ToString(item:name()) .. " = " .. Utils.ToString(item:value()))
+            QolTweaks.settings[item:name()] = item:value() == "on"
             QolTweaks:Save()
-            Utils.PrintTable(QolTweaks.settings, 3)
         end
 
         MenuCallbackHandler.QolTweaks_slider = function(self, item)
@@ -114,7 +120,15 @@ if RequiredScript == "lib/managers/menumanager" then
                 QolTweaks.settings[item:name()] = truncated
                 QolTweaks:Save()
             end
-            Utils.PrintTable(QolTweaks.settings)
+        end
+
+        MenuCallbackHandler.QolTweaks_shield_purge = function(self)
+            if managers.enemy then
+                local total = managers.enemy:purge_shields()
+                log(total .. "shields cleared.")
+            else
+                log("Manager not available.")
+            end
         end
     end)
 
@@ -246,48 +260,87 @@ if RequiredScript == "lib/managers/menumanager" then
     skip_masks_buy(masks_buy)
     skip_masks_buyslot(masks_buyslot)
     skip_masks_craft(masks_craft)
+    log("Skips Initialized.")
 end
 
 if RequiredScript == "lib/managers/enemymanager" then
-    local time_limit = QolTweaks.settings["cleaner_time_limit"]
-    local update = QolTweaks.settings["cleaner_toggle"]
-    log()
-    log("in script")
-    log(time_limit)
-    log(update)
+    log("EnemyManager start.")
+    local default = 60
 
-    Hooks:PostHook(EnemyManager, "init", "EnemyManagerUpdateQolTweaks", function(self, t)
-        log("post hook\n")
-        log(time_limit)
-        log(update)
-        log(self._shield_disposal_lifetime)
-        if update then
-            self._shield_disposal_lifetime = time_limit
-            log("new lifetime")
-            log(update)
+    Hooks:PostHook(EnemyManager, "init", "EnemyManagerInitQolTweaks", function(self)
+        QolTweaks:Load()
+        local cleaner = QolTweaks:getCleaner()
+        local cleaner_time = QolTweaks:getCleanerTime()
+        local protector = QolTweaks:getProtector()
+        local protector_time = QolTweaks:getProtectorTime()
+        local time_limit = default
+
+        if cleaner and not protector then
+            time_limit = cleaner_time
+        elseif not cleaner and protector then
+            time_limit = protector_time
         end
-        log(update)
-        log(self._shield_disposal_lifetime)
-        log("End of hook\n")
-        -- Utils:PrintTable(QolTweaks.settings)
+        log("Initializing.")
+        log("Original lifetime: " .. self._shield_disposal_lifetime)
+        self._shield_disposal_lifetime = time_limit
+        log("Updated: " .. self._shield_disposal_lifetime)
     end)
 
-    -- function EnemyManager:set_shield_lifetime(time)
-    --     self._shield_disposal_lifetime = time
-    --     log("aaaaaaaaaaaaaaaaaaaaa")
-    -- end
+    Hooks:PreHook(EnemyManager, "register_shield", "EnemyManagerRegisterQolTweaks", function(self)
+        log("Registering Shield.")
+        log("Current lifetime: " .. self._shield_disposal_lifetime)
+        local time = default
+        if QolTweaks:getCleaner() and not QolTweaks:getProtector() then
+            time = QolTweaks:getCleanerTime()
+            log("Cleaner lifetime: " .. time)
+        elseif not QolTweaks:getCleaner() and QolTweaks:getProtector() then
+            time = QolTweaks:getProtectorTime()
+            log("Protector lifetime: " .. time)
+        end
 
-    --EnemyManager:set_shield_lifetime(QolTweaks.cleaner_time_limit)
+        log("New lifetime: " .. time)
+        self._shield_disposal_lifetime = time
+    end)
+
+    Hooks:PreHook(EnemyManager, "unregister_shield", "EnemyManagerPreUnregister", function(self)
+        log("Unregistering Shield.")
+        log("Current: " .. self._shield_disposal_lifetime)
+        local time = default
+        if QolTweaks:getCleaner() and not QolTweaks:getProtector() then
+            time = QolTweaks:getCleanerTime()
+            log("Cleaner: " .. time)
+        elseif not QolTweaks:getCleaner() and QolTweaks:getProtector() then
+            time = QolTweaks:getProtectorTime()
+            log("Protector: " .. time)
+        end
+        log("New: " .. time)
+        self._shield_disposal_lifetime = time
+    end)
+
+    function EnemyManager:purge_shields()
+        if not self._enemy_data then
+            return -1
+        end
+
+        local enemy_data = self._enemy_data
+        local shields = enemy_data.shields
+        local purge_count = enemy_data.nr_shields
+
+        for key, data in pairs(shields) do
+            self:unregister_shield(data.unit)
+            data.unit:set_slot(0)
+            shields[key] = nil
+        end
+
+        return purge_count
+    end
 end
-
 if RequiredScript == "lib/units/weapons/grenades/concussiongrenade" then
     local update = QolTweaks.settings["fuse_timer_toggle"]
-    log("Hooked")
     if update then
         Hooks:PostHook(ConcussionGrenade, "_setup_from_tweak_data", "ConcussionGrenadeQolTweaks", function(self, t)
             self._init_timer = QolTweaks.settings["fuse_timer_value"]
             log("Registered " .. self._init_timer)
         end)
     end
-    log("Post Hook")
 end
