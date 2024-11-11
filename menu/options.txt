@@ -114,6 +114,26 @@
         },
         {
             "type": "toggle",
+            "id": "shield_limit_toggle",
+            "title": "QolTweaks_shield_limit_name",
+            "description": "QolTweaks_shield_limit_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "shield_limit_toggle"
+        },
+        {
+            "type": "slider",
+            "id": "shield_limit",
+            "title": "QolTweaks_shield_limit_slider_name",
+            "description": "QolTweaks_shield_limit_slider_desc",
+            "callback": "QolTweaks_spawns_slider",
+            "value": "shield_limit",
+            "max": 64,
+            "min": 1,
+            "step": 1,
+            "display_precision": 0
+        },
+        {
+            "type": "toggle",
             "id": "cleaner_toggle",
             "title": "QolTweaks_cleaner_name",
             "description": "QolTweaks_cleaner_desc",
