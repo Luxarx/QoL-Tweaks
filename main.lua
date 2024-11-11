@@ -267,6 +267,31 @@ if RequiredScript == "lib/managers/enemymanager" then
     log("EnemyManager start.")
     local default = 60
 
+    function EnemyManager:purge_shields()
+        if not self._enemy_data then
+            return -1
+        end
+
+        local enemy_data = self._enemy_data
+        local shields = enemy_data.shields
+        local purge_count = enemy_data.nr_shields
+
+        for key, data in pairs(shields) do
+            self:unregister_shield(data.unit)
+            data.unit:set_slot(0)
+            shields[key] = nil
+        end
+
+        return purge_count
+    end
+
+    function EnemyManager:set_shield_limit(limit)
+        if not self._MAX_NR_SHIELDS then
+            return
+        end
+        self._MAX_NR_SHIELDS = limit
+    end
+
     Hooks:PostHook(EnemyManager, "init", "EnemyManagerInitQolTweaks", function(self)
         QolTweaks:Load()
         local cleaner = QolTweaks:getCleaner()
@@ -317,23 +342,6 @@ if RequiredScript == "lib/managers/enemymanager" then
         self._shield_disposal_lifetime = time
     end)
 
-    function EnemyManager:purge_shields()
-        if not self._enemy_data then
-            return -1
-        end
-
-        local enemy_data = self._enemy_data
-        local shields = enemy_data.shields
-        local purge_count = enemy_data.nr_shields
-
-        for key, data in pairs(shields) do
-            self:unregister_shield(data.unit)
-            data.unit:set_slot(0)
-            shields[key] = nil
-        end
-
-        return purge_count
-    end
 end
 if RequiredScript == "lib/units/weapons/grenades/concussiongrenade" then
     local update = QolTweaks.settings["fuse_timer_toggle"]
