@@ -32,21 +32,26 @@
 	"QolTweaks_weapons_cosmetics_name": "Weapon Skins",
 	"QolTweaks_weapons_cosmetics_desc": "slayyy yas queen",
 
+	"QolTweaks_shield_limit_name": "Shield Hoarder",
+	"QolTweaks_shield_limit_desc": "get your own",
+	"QolTweaks_shield_limit_slider_name": "Shield Spawn Limit",
+	"QolTweaks_shield_limit_slider_desc": "FPS death slider",
+
 	"QolTweaks_cleaner_name": "Shield Cleaner",
 	"QolTweaks_cleaner_desc": "pls i cant see anyting",
 	"QolTweaks_cleaner_time_limit_name": "Seconds until shields despawn",
-	"QolTweaks_cleaner_time_limit_desc": "",
+	"QolTweaks_cleaner_time_limit_desc": "Impatience Meter",
 	
 	"QolTweaks_protector_name": "Shield Protector",
 	"QolTweaks_protector_desc": "they havent done anything wrong",
 	"QolTweaks_protector_time_limit_name": "Seconds until shields despawn",
-	"QolTweaks_protector_time_limit_desc": "",
+	"QolTweaks_protector_time_limit_desc": "cya fps",
 	
 	"QolTweaks_fuse_timer_name": "Concussion Grenade Fuse Timer",
-	"QolTweaks_fuse_timer_desc": "",
+	"QolTweaks_fuse_timer_desc": "FLASHBANG THROUGH THE DOOR!",
 	"QolTweaks_fuse_timer_value_name": "Seconds until detonation",
-	"QolTweaks_fuse_timer_value_desc": "",
+	"QolTweaks_fuse_timer_value_desc": "Nice grenades finish last",
 
 	"QolTweaks_shield_purge_name": "Clean all shields",
-	"QolTweaks_shield_purge_desc": ""
+	"QolTweaks_shield_purge_desc": "BE GONE TRASH"
 }
