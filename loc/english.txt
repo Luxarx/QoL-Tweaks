@@ -45,7 +45,7 @@
 	"QolTweaks_protector_name": "Shield Protector",
 	"QolTweaks_protector_desc": "they havent done anything wrong",
 	"QolTweaks_protector_time_limit_name": "Seconds until shields despawn",
-	"QolTweaks_protector_time_limit_desc": "cya fps",
+	"QolTweaks_protector_time_limit_desc": "might want to download some more ram",
 	
 	"QolTweaks_fuse_timer_name": "Concussion Grenade Fuse Timer",
 	"QolTweaks_fuse_timer_desc": "FLASHBANG THROUGH THE DOOR!",
@@ -53,5 +53,8 @@
 	"QolTweaks_fuse_timer_value_desc": "Nice grenades finish last",
 
 	"QolTweaks_shield_purge_name": "Clean all shields",
-	"QolTweaks_shield_purge_desc": "BE GONE TRASH"
+	"QolTweaks_shield_purge_desc": "BE GONE TRASH",
+
+	"QolTweaks_skip_title_name": "Skip Title Screen",
+	"QolTweaks_skip_title_desc": "stop spamming chill"
 }

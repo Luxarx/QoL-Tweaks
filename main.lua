@@ -28,7 +28,7 @@ QolTweaks.settings = {
     protector_time_limit = 60,
     fuse_timer_toggle = false,
     fuse_timer_value = 1,
-    skip_titlescreen = false
+    skip_title_toggle = false
 }
 
 function QolTweaks:Load()
@@ -92,6 +92,10 @@ end
 
 function QolTweaks:getProtectorTime()
     return self.settings["protector_time_limit"]
+end
+
+function QolTweaks:getSkipTitle()
+    return self.settings["skip_title_toggle"]
 end
 
 QolTweaks:Load()
@@ -290,13 +294,11 @@ end
 
 
 if RequiredScript == "lib/states/menutitlescreenstate" then
-
-    Hooks:PreHook(MenuTitlescreenState, "get_start_pressed_controller_index", "MenuTitlescreenStatePressQol",
-        function(self)
-            if not _G.IS_VR then
-                return 1
-            end
-        end)
+    Hooks:PreHook(MenuTitlescreenState, "get_start_pressed_controller_index", "MenuTitlescreenStatePressQol", function()
+        if not _G.IS_VR and QolTweaks:getSkipTitle() then
+            return 1
+        end
+    end)
 end
 if RequiredScript == "lib/managers/enemymanager" then
     log("EnemyManager start.")
@@ -328,7 +330,7 @@ if RequiredScript == "lib/managers/enemymanager" then
         local cleaner_time = QolTweaks:getCleanerTime()
         local protector = QolTweaks:getProtector()
         local protector_time = QolTweaks:getProtectorTime()
-        
+
         local total_shields = default_total
         local time_limit = default_time
 
