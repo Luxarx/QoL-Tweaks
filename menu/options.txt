@@ -33,7 +33,7 @@
             "id": "shield_limit",
             "title": "QolTweaks_shield_limit_slider_name",
             "description": "QolTweaks_shield_limit_slider_desc",
-            "callback": "QolTweaks_spawns_slider",
+            "callback": "QolTweaks_slider",
             "value": "shield_limit",
             "max": 64,
             "min": 1,
