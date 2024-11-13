@@ -27,7 +27,7 @@ QolTweaks.settings = {
     protector_show_time = false,
     protector_time_limit = 60,
     fuse_timer_toggle = false,
-    fuse_timer_value = 1,
+    fuse_timer_value = 2,
     skip_title_toggle = false
 }
 
@@ -127,12 +127,9 @@ if RequiredScript == "lib/managers/menumanager" then
 
         MenuCallbackHandler.QolTweaks_slider = function(self, item)
             if item:value() and tonumber(item:value()) then
-                local precision = 2
-                local truncated = item:value() * 10 ^ precision
-                truncated = math.floor(truncated + 0.5) / 10 ^ precision
+                local new_value = math.round_with_precision(item:value(), item._decimal_count)
 
-
-                QolTweaks.settings[item:name()] = truncated
+                QolTweaks.settings[item:name()] = new_value
                 QolTweaks:Save()
             end
         end
@@ -143,19 +140,6 @@ if RequiredScript == "lib/managers/menumanager" then
                 log(total .. "shields cleared.")
             else
                 log("Manager not available.")
-            end
-        end
-
-        MenuCallbackHandler.QolTweaks_spawns_slider = function(self, item)
-            local new_value = item:value()
-            if new_value and tonumber(new_value) then
-                QolTweaks.settings[item:name()] = math.floor(new_value)
-                if managers.enemy then
-                    managers.enemy._MAX_NR_SHIELDS = new_value
-                    QolTweaks:Save()
-                else
-                    log("Manager not available.")
-                end
             end
         end
     end)
@@ -288,7 +272,7 @@ if RequiredScript == "lib/managers/menumanager" then
     skip_masks_buy(masks_buy)
     skip_masks_buyslot(masks_buyslot)
     skip_masks_craft(masks_craft)
-    log("Skips Initialized.")
+
 end
 
 
@@ -301,9 +285,8 @@ if RequiredScript == "lib/states/menutitlescreenstate" then
     end)
 end
 if RequiredScript == "lib/managers/enemymanager" then
-    log("EnemyManager start.")
     local default_time = 60
-    local default_total = 32
+    local default_total = 8
     function EnemyManager:purge_shields()
         if not self._enemy_data then
             return -1
@@ -323,19 +306,17 @@ if RequiredScript == "lib/managers/enemymanager" then
     end
 
     Hooks:PostHook(EnemyManager, "init", "EnemyManagerInitQol", function(self)
+        local total_shields = default_total
+        local time_limit = default_time
+
         QolTweaks:Load()
-        local shield_limit_state = QolTweaks:getShieldLimitState()
-        local shield_limit = QolTweaks:getShieldLimit()
         local cleaner = QolTweaks:getCleaner()
         local cleaner_time = QolTweaks:getCleanerTime()
         local protector = QolTweaks:getProtector()
         local protector_time = QolTweaks:getProtectorTime()
 
-        local total_shields = default_total
-        local time_limit = default_time
-
-        if shield_limit_state then
-            total_shields = shield_limit
+        if QolTweaks:getShieldLimitState() then
+            total_shields = QolTweaks:getShieldLimit()
         end
 
         if cleaner and not protector then
@@ -343,50 +324,49 @@ if RequiredScript == "lib/managers/enemymanager" then
         elseif not cleaner and protector then
             time_limit = protector_time
         end
+
         log("Initializing.")
         log("Original lifetime: " .. self._shield_disposal_lifetime)
         self._shield_disposal_lifetime = time_limit
-        log("Updated: " .. self._shield_disposal_lifetime)
+        log("Saved lifetime: " .. self._shield_disposal_lifetime)
         self._MAX_NR_SHIELDS = total_shields
         log("Updated limit: " .. self._MAX_NR_SHIELDS)
+        log()
     end)
 
     Hooks:PreHook(EnemyManager, "register_shield", "EnemyManagerRegisterQol", function(self)
-        log("Registering Shield.")
-        log("Current lifetime: " .. self._shield_disposal_lifetime)
+        local total_shields = default_total
         local time_limit = default_time
+        if QolTweaks:getShieldLimitState() then
+            total_shields = QolTweaks:getShieldLimit()
+        end
         if QolTweaks:getCleaner() and not QolTweaks:getProtector() then
             time_limit = QolTweaks:getCleanerTime()
-            log("Cleaner lifetime: " .. time_limit)
         elseif not QolTweaks:getCleaner() and QolTweaks:getProtector() then
             time_limit = QolTweaks:getProtectorTime()
-            log("Protector lifetime: " .. time_limit)
         end
 
-        log("New lifetime: " .. time_limit)
         self._shield_disposal_lifetime = time_limit
+        self._MAX_NR_SHIELDS = total_shields
     end)
 
     Hooks:PreHook(EnemyManager, "unregister_shield", "EnemyManagerPreUnregisterQol", function(self)
-        log("Unregistering Shield.")
         local total_shields = default_total
-        log("Current: " .. self._shield_disposal_lifetime)
         local time_limit = default_time
+        if QolTweaks:getShieldLimitState() then
+            total_shields = QolTweaks:getShieldLimit()
+        end
 
         if QolTweaks:getShieldLimitState() then
             total_shields = QolTweaks:getShieldLimit()
         end
         if QolTweaks:getCleaner() and not QolTweaks:getProtector() then
             time_limit = QolTweaks:getCleanerTime()
-            log("Cleaner: " .. time_limit)
         elseif not QolTweaks:getCleaner() and QolTweaks:getProtector() then
             time_limit = QolTweaks:getProtectorTime()
-            log("Protector: " .. time_limit)
         end
 
         self._MAX_NR_SHIELDS = total_shields
-        log("New total: " .. total_shields)
-        log("New: " .. time_limit)
         self._shield_disposal_lifetime = time_limit
     end)
 end
@@ -395,16 +375,6 @@ if RequiredScript == "lib/units/weapons/grenades/concussiongrenade" then
     if update then
         Hooks:PostHook(ConcussionGrenade, "_setup_from_tweak_data", "ConcussionGrenadeQol", function(self, t)
             self._init_timer = QolTweaks.settings["fuse_timer_value"]
-            log("Registered " .. self._init_timer)
         end)
     end
 end
-
--- if RequiredScript == "lib/managers/hudmanagerpd2" then
---     Hooks:PostHook(HUDManager,"setup_blackscreen_hud", "HUDBlackScreenSetupQol", function(self)
---             local hud_blackscreen = self._hud_blackscreen
---             hud_blackscreen._blackscreen_panel:child("skip_text"):set_font(tweak_data.hud.small_font)
---             hud_blackscreen._blackscreen_panel:child("loading_text"):set_font_size(tweak_data.hud.small_font_size)
---             log("aaaaaaaaaaaaaaaa")
---     end)
--- end
