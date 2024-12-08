@@ -1,0 +1,120 @@
+{
+    "menu_id": "qol_skipsmenu",
+    "parent_menu_id": "qol_mainmenu",
+    "title": "QolTweaks_skipsmenu_name",
+    "description": "QolTweaks_skipsmenu_desc",
+    "items": [
+        {
+            "type": "toggle",
+            "id": "crimenet_buyjob_toggle",
+            "title": "QolTweaks_crimenet_buyjob_name",
+            "description": "QolTweaks_crimenet_buyjob_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "crimenet_buyjob_toggle"
+        },
+        {
+            "type": "toggle",
+            "id": "crimenet_buybet_toggle",
+            "title": "QolTweaks_crimenet_buybet_name",
+            "description": "QolTweaks_crimenet_buybet_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "crimenet_buybet_toggle"
+        },
+        {
+            "type": "toggle",
+            "id": "weapons_buy_toggle",
+            "title": "QolTweaks_weapons_buy_name",
+            "description": "QolTweaks_weapons_buy_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "weapons_buy_toggle"
+        },
+        {
+            "type": "toggle",
+            "id": "weapons_sell_toggle",
+            "title": "QolTweaks_weapons_sell_name",
+            "description": "QolTweaks_weapons_sell_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "weapons_sell_toggle"
+        },
+        {
+            "type": "toggle",
+            "id": "weapons_mod_toggle",
+            "title": "QolTweaks_weapons_mod_name",
+            "description": "QolTweaks_weapons_mod_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "weapons_mod_toggle"
+        },
+        {
+            "type": "toggle",
+            "id": "weapons_buymod_toggle",
+            "title": "QolTweaks_weapons_buymod_name",
+            "description": "QolTweaks_weapons_buymod_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "weapons_buymod_toggle"
+        },
+        {
+            "type": "toggle",
+            "id": "weapons_cosmetics_toggle",
+            "title": "QolTweaks_weapons_cosmetics_name",
+            "description": "QolTweaks_weapons_cosmetics_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "weapons_cosmetics_toggle"
+        },
+        {
+            "type": "toggle",
+            "id": "weapons_buyslot_toggle",
+            "title": "QolTweaks_weapons_buyslot_name",
+            "description": "QolTweaks_weapons_buyslot_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "weapons_buyslot_toggle"
+        },
+        {
+            "type": "toggle",
+            "id": "briefing_buyasset_toggle",
+            "title": "QolTweaks_briefing_buyasset_name",
+            "description": "QolTweaks_briefing_buyasset_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "briefing_buyasset_toggle"
+        },
+        {
+            "type": "toggle",
+            "id": "briefing_buyall_toggle",
+            "title": "QolTweaks_briefing_buyall_name",
+            "description": "QolTweaks_briefing_buyall_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "briefing_buyall_toggle"
+        },
+        {
+            "type": "toggle",
+            "id": "preplanning_rebuy_toggle",
+            "title": "QolTweaks_preplanning_rebuy_name",
+            "description": "QolTweaks_preplanning_rebuy_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "preplanning_rebuy_toggle"
+        },
+        {
+            "type": "toggle",
+            "id": "masks_buy_toggle",
+            "title": "QolTweaks_masks_buy_name",
+            "description": "QolTweaks_masks_buy_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "masks_buy_toggle"
+        },
+        {
+            "type": "toggle",
+            "id": "masks_buyslot_toggle",
+            "title": "QolTweaks_masks_buyslot_name",
+            "description": "QolTweaks_masks_buyslot_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "masks_buyslot_toggle"
+        },
+        {
+            "type": "toggle",
+            "id": "masks_craft_toggle",
+            "title": "QolTweaks_masks_craft_name",
+            "description": "QolTweaks_masks_craft_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "masks_craft_toggle"
+        }
+    ]
+}

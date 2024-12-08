@@ -3,6 +3,8 @@ _G.QolTweaks = _G.QolTweaks or {}
 QolTweaks.modPath = ModPath
 QolTweaks.savePath = SavePath .. "qol_tweaks.txt"
 QolTweaks.optionsPath = ModPath .. "menu/options.txt"
+QolTweaks.skipsPath = ModPath .. "menu/confirm_skip.json"
+QolTweaks.timersPath = ModPath .. "menu/timers.json"
 
 QolTweaks.settings = {
     crimenet_buyjob_toggle = false,
@@ -99,8 +101,9 @@ function QolTweaks:getSkipTitle()
 end
 
 QolTweaks:Load()
-
 MenuHelper:LoadFromJsonFile(QolTweaks.optionsPath, QolTweaks, QolTweaks.settings)
+MenuHelper:LoadFromJsonFile(QolTweaks.timersPath, QolTweaks, QolTweaks.settings)
+MenuHelper:LoadFromJsonFile(QolTweaks.skipsPath, QolTweaks, QolTweaks.settings)
 
 if RequiredScript == "lib/managers/menumanager" then
     Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInitQolTweaks", function(loc)
@@ -218,6 +221,12 @@ if RequiredScript == "lib/managers/menumanager" then
         end
     end
 
+    local function skip_weapons_sell(value)
+        if value then
+            MenuManager.show_confirm_blackmarket_sell = expect_yes
+        end
+    end
+
     local function skip_weapons_mod(value)
         if value then
             MenuManager.show_confirm_blackmarket_mod = expect_yes
@@ -256,6 +265,7 @@ if RequiredScript == "lib/managers/menumanager" then
 
     local weapons_buy = QolTweaks.settings["weapons_buy_toggle"]
     local weapons_buyslot = QolTweaks.settings["weapons_buyslot_toggle"]
+    local weapons_sell = QolTweaks.settings["weapons_sell_toggle"]
     local weapons_mod = QolTweaks.settings["weapons_mod_toggle"]
     local weapons_buymod = QolTweaks.settings["weapons_buymod_toggle"]
     local weapons_cosmetics = QolTweaks.settings["weapons_cosmetics_toggle"]
@@ -265,6 +275,7 @@ if RequiredScript == "lib/managers/menumanager" then
 
     skip_weapons_buy(weapons_buy)
     skip_weapons_buyslot(weapons_buyslot)
+    skip_weapons_sell(weapons_sell)
     skip_weapons_mod(weapons_mod)
     skip_weapons_buymod(weapons_buymod)
     skip_weapons_cosmetics(weapons_cosmetics)
@@ -272,7 +283,6 @@ if RequiredScript == "lib/managers/menumanager" then
     skip_masks_buy(masks_buy)
     skip_masks_buyslot(masks_buyslot)
     skip_masks_craft(masks_craft)
-
 end
 
 

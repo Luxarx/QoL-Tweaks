@@ -1,6 +1,10 @@
 {
 	"QolTweaks_mainmenu_name": "Quality of Life Tweaks",
 	"QolTweaks_mainmenu_desc": "",
+	"QolTweaks_skipsmenu_name": "Menu Prompt Skips",
+	"QolTweaks_skipsmenu_desc": "",
+	"QolTweaks_timermenu_name": "Timer Tweaks",
+	"QolTweaks_timermenu_desc": "",
 
 	"QolTweaks_crimenet_buyjob_name": "CRIME.NET Contracts",
 	"QolTweaks_crimenet_buyjob_desc": "Gold is golden",
@@ -23,6 +27,8 @@
 	"QolTweaks_masks_craft_desc": "Crafting table required",
 	"QolTweaks_weapons_buy_name": "Buy Weapon",
 	"QolTweaks_weapons_buy_desc": "Ammu-Nation",
+	"QolTweaks_weapons_sell_name": "Sell Weapon",
+	"QolTweaks_weapons_sell_desc": "Craigslist",
 	"QolTweaks_weapons_buyslot_name": "Buy Inventory Weapon Slot",
 	"QolTweaks_weapons_buyslot_desc": "That magical place where your guns go",
 	"QolTweaks_weapons_mod_name": "Weapon Modding and Attachments",
