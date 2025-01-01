@@ -38,6 +38,9 @@
 	"QolTweaks_weapons_cosmetics_name": "Weapon Skins",
 	"QolTweaks_weapons_cosmetics_desc": "slayyy yas queen",
 
+	"QolTweaks_shieldtweaks_menu_name": "Shield Tweaks",
+	"QolTweaks_shieldtweaks_menu_desc": "",
+
 	"QolTweaks_shield_limit_name": "Shield Hoarder",
 	"QolTweaks_shield_limit_desc": "get your own",
 	"QolTweaks_shield_limit_slider_name": "Shield Spawn Limit",
@@ -52,15 +55,26 @@
 	"QolTweaks_protector_desc": "they havent done anything wrong",
 	"QolTweaks_protector_time_limit_name": "Seconds until shields despawn",
 	"QolTweaks_protector_time_limit_desc": "might want to download some more ram",
+
+	"QolTweaks_shield_purge_name": "Clean all shields",
+	"QolTweaks_shield_purge_desc": "BE GONE TRASH",
+
+	"QolTweaks_shield_push_name": "Enable Shield Push",
+	"QolTweaks_shield_push_desc": "Cleared for take-off",
+	"QolTweaks_shield_push_force_min_name": "Minimum Push Force",
+	"QolTweaks_shield_push_force_min_desc": "",
+	"QolTweaks_shield_push_force_max_name": "Maximum Push Force",
+	"QolTweaks_shield_push_force_max_desc": "",
+	"QolTweaks_shield_push_spread_name": "Push Spread",
+	"QolTweaks_shield_push_spread_desc": "Push direction randomness",
+	"QolTweaks_shield_push_mass_factor_name": "Mass force factor",
+	"QolTweaks_shield_push_mass_factor_desc": "",
 	
 	"QolTweaks_fuse_timer_name": "Concussion Grenade Fuse Timer",
 	"QolTweaks_fuse_timer_desc": "FLASHBANG THROUGH THE DOOR!",
 	"QolTweaks_fuse_timer_value_name": "Seconds until detonation",
 	"QolTweaks_fuse_timer_value_desc": "Nice grenades finish last",
 
-	"QolTweaks_shield_purge_name": "Clean all shields",
-	"QolTweaks_shield_purge_desc": "BE GONE TRASH",
-
 	"QolTweaks_skip_title_name": "Skip Title Screen",
-	"QolTweaks_skip_title_desc": "stop spamming chill"
+	"QolTweaks_skip_title_desc": "stop spamming chill",
 }

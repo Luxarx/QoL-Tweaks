@@ -1,0 +1,147 @@
+{
+    "menu_id": "qol_shieldtweaks_menu",
+    "parent_menu_id": "qol_mainmenu",
+    "title": "QolTweaks_shieldtweaks_menu_name",
+    "description": "QolTweaks_shieldtweaks_menu_desc",
+    "items": [
+        {
+            "type": "toggle",
+            "id": "shield_limit_toggle",
+            "title": "QolTweaks_shield_limit_name",
+            "description": "QolTweaks_shield_limit_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "shield_limit_toggle"
+        },
+        {
+            "type": "slider",
+            "id": "shield_limit",
+            "title": "QolTweaks_shield_limit_slider_name",
+            "description": "QolTweaks_shield_limit_slider_desc",
+            "callback": "QolTweaks_slider",
+            "value": "shield_limit",
+            "max": 64,
+            "min": 1,
+            "step": 1,
+            "display_precision": 0
+        },
+        {
+            "type": "divider",
+            "size": 8
+        },
+        {
+            "type": "toggle",
+            "id": "cleaner_toggle",
+            "title": "QolTweaks_cleaner_name",
+            "description": "QolTweaks_cleaner_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "cleaner_toggle"
+        },
+        {
+            "type": "slider",
+            "id": "cleaner_time_limit",
+            "title": "QolTweaks_cleaner_time_limit_name",
+            "description": "QolTweaks_cleaner_time_limit_desc",
+            "callback": "QolTweaks_slider",
+            "value": "cleaner_time_limit",
+            "max": 60,
+            "min": 0.01,
+            "step": 1,
+            "display_precision": 2
+        },
+        {
+            "type": "divider",
+            "size": 8
+        },
+        {
+            "type": "toggle",
+            "id": "protector_toggle",
+            "title": "QolTweaks_protector_name",
+            "description": "QolTweaks_protector_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "protector_toggle"
+        },
+        {
+            "type": "slider",
+            "id": "protector_time_limit",
+            "title": "QolTweaks_protector_time_limit_name",
+            "description": "QolTweaks_protector_time_limit_desc",
+            "callback": "QolTweaks_slider",
+            "value": "protector_time_limit",
+            "max": 3600,
+            "min": 60,
+            "step": 1,
+            "display_precision": 2
+        },
+        {
+            "type": "divider",
+            "size": 8
+        },
+        {
+            "type": "button",
+            "id": "shield_purge_button",
+            "title": "QolTweaks_shield_purge_name",
+            "description": "QolTweaks_shield_purge_desc",
+            "callback": "QolTweaks_shield_purge"
+        },
+        {
+            "type": "divider",
+            "size": 8
+        },
+        {
+            "type": "toggle",
+            "id": "shield_push_toggle",
+            "title": "QolTweaks_shield_push_name",
+            "description": "QolTweaks_shield_push_desc",
+            "callback": "QolTweaks_on_toggle",
+            "value": "shield_push_toggle"
+        },
+        {
+            "type": "slider",
+            "id": "shield_push_force_min",
+            "title": "QolTweaks_shield_push_force_min_name",
+            "description": "QolTweaks_shield_push_force_min_desc",
+            "callback": "QolTweaks_slider",
+            "value": "shield_push_force_min",
+            "max": 1000,
+            "min": 0,
+            "step": 1,
+            "display_precision": 0
+        },
+        {
+            "type": "slider",
+            "id": "shield_push_force_max",
+            "title": "QolTweaks_shield_push_force_max_name",
+            "description": "QolTweaks_shield_push_force_max_desc",
+            "callback": "QolTweaks_slider",
+            "value": "shield_push_force_max",
+            "max": 1000,
+            "min": 0,
+            "step": 1,
+            "display_precision": 0
+        },
+        {
+            "type": "slider",
+            "id": "shield_push_spread",
+            "title": "QolTweaks_shield_push_spread_name",
+            "description": "QolTweaks_shield_push_spread_desc",
+            "callback": "QolTweaks_slider",
+            "value": "shield_push_spread",
+            "max": 100,
+            "min": 0,
+            "step": 1,
+            "display_precision": 0
+        },
+        {
+            "type": "slider",
+            "id": "shield_push_mass_factor",
+            "title": "QolTweaks_shield_push_mass_factor_name",
+            "description": "QolTweaks_shield_push_mass_factor_desc",
+            "callback": "QolTweaks_slider",
+            "value": "shield_push_mass_factor",
+            "max": 100,
+            "min": 1,
+            "step": 1,
+            "display_precision": 0
+        }
+    ]
+}
