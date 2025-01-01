@@ -5,6 +5,7 @@ QolTweaks.savePath = SavePath .. "qol_tweaks.txt"
 QolTweaks.optionsPath = ModPath .. "menu/options.txt"
 QolTweaks.skipsPath = ModPath .. "menu/confirm_skip.json"
 QolTweaks.timersPath = ModPath .. "menu/timers.json"
+QolTweaks.shieldsPath = ModPath .. "menu/shield_tweaks.json"
 
 QolTweaks.settings = {
     crimenet_buyjob_toggle = false,
@@ -30,7 +31,12 @@ QolTweaks.settings = {
     protector_time_limit = 60,
     fuse_timer_toggle = false,
     fuse_timer_value = 2,
-    skip_title_toggle = false
+    skip_title_toggle = false,
+    shield_push_toggle = false,
+    shield_push_force_min = 0,
+    shield_push_force_max = 0,
+    shield_push_spread = 0,
+    shield_push_mass_factor = 1
 }
 
 function QolTweaks:Load()
@@ -55,7 +61,6 @@ function QolTweaks:Load()
         for k, v in pairs(data) do
             self.settings[k] = v
         end
-        log("Settings loaded.")
     end
 end
 
@@ -64,7 +69,6 @@ function QolTweaks:Save()
     if file then
         file:write(json.encode(self.settings))
         file:close()
-        log("Settings saved.")
     end
 end
 
@@ -100,10 +104,31 @@ function QolTweaks:getSkipTitle()
     return self.settings["skip_title_toggle"]
 end
 
+function QolTweaks:getShieldPush()
+    return self.settings["shield_push_toggle"]
+end
+
+function QolTweaks:getShieldForceMin()
+    return self.settings["shield_push_force_min"]
+end
+
+function QolTweaks:getShieldForceMax()
+    return self.settings["shield_push_force_max"]
+end
+
+function QolTweaks:getShieldMassFactor()
+    return self.settings["shield_push_mass_factor"]
+end
+
+function QolTweaks:getShieldSpread()
+    return self.settings["shield_push_spread"]
+end
+
 QolTweaks:Load()
 MenuHelper:LoadFromJsonFile(QolTweaks.optionsPath, QolTweaks, QolTweaks.settings)
 MenuHelper:LoadFromJsonFile(QolTweaks.timersPath, QolTweaks, QolTweaks.settings)
 MenuHelper:LoadFromJsonFile(QolTweaks.skipsPath, QolTweaks, QolTweaks.settings)
+MenuHelper:LoadFromJsonFile(QolTweaks.shieldsPath, QolTweaks, QolTweaks.settings)
 
 if RequiredScript == "lib/managers/menumanager" then
     Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInitQolTweaks", function(loc)
@@ -123,7 +148,6 @@ if RequiredScript == "lib/managers/menumanager" then
         end
 
         MenuCallbackHandler.QolTweaks_on_toggle = function(self, item)
-            log(Utils.ToString(item:name()) .. " = " .. Utils.ToString(item:value()))
             QolTweaks.settings[item:name()] = item:value() == "on"
             QolTweaks:Save()
         end
@@ -140,9 +164,6 @@ if RequiredScript == "lib/managers/menumanager" then
         MenuCallbackHandler.QolTweaks_shield_purge = function(self)
             if managers.enemy then
                 local total = managers.enemy:purge_shields()
-                log(total .. "shields cleared.")
-            else
-                log("Manager not available.")
             end
         end
     end)
@@ -294,9 +315,11 @@ if RequiredScript == "lib/states/menutitlescreenstate" then
         end
     end)
 end
+
 if RequiredScript == "lib/managers/enemymanager" then
     local default_time = 60
     local default_total = 8
+
     function EnemyManager:purge_shields()
         if not self._enemy_data then
             return -1
@@ -313,6 +336,56 @@ if RequiredScript == "lib/managers/enemymanager" then
         end
 
         return purge_count
+    end
+
+    function EnemyManager:find_dynamic_body(unit)
+        local body = unit:body(0)
+        if body and body:enabled() and body:dynamic() then
+            return body
+        end
+
+        local closest_body = nil
+        local closest_distance_sq = math.huge
+        local nr_bodies = unit:num_bodies()
+        local original_com = unit:position()
+
+        for i = 0, nr_bodies - 1 do
+            local test_body = unit:body(i)
+            if test_body:enabled() and test_body:dynamic() then
+                local distance_sq = mvector3.distance_sq(test_body:center_of_mass(), original_com)
+                if distance_sq < closest_distance_sq then
+                    closest_distance_sq = distance_sq
+                    closest_body = test_body
+                end
+            end
+        end
+
+        return closest_body
+    end
+
+    function EnemyManager:push_shield(shield_unit, min_force, max_force, mass_factor)
+        if alive(shield_unit) then
+            local shield_body = self:find_dynamic_body(shield_unit)
+            if shield_body then
+                local random_direction = Vector3(
+                    math.rand(-1, 1),
+                    math.rand(-1, 1),
+                    math.rand(-0.5, 1)
+                )
+                mvector3.normalize(random_direction)
+
+                local shield_spread = QolTweaks:getShieldSpread()
+                random_direction = random_direction:spread(shield_spread)
+
+                local force_magnitude = math.random(min_force, max_force)
+                mvector3.set_length(random_direction, force_magnitude)
+
+                local push_position = shield_body:center_of_mass() +
+                    Vector3(math.rand(-10, 10), math.rand(-10, 10), math.rand(20, 30))
+
+                shield_body:push_at(shield_body:mass() * mass_factor, random_direction, push_position)
+            end
+        end
     end
 
     Hooks:PostHook(EnemyManager, "init", "EnemyManagerInitQol", function(self)
@@ -335,13 +408,8 @@ if RequiredScript == "lib/managers/enemymanager" then
             time_limit = protector_time
         end
 
-        log("Initializing.")
-        log("Original lifetime: " .. self._shield_disposal_lifetime)
         self._shield_disposal_lifetime = time_limit
-        log("Saved lifetime: " .. self._shield_disposal_lifetime)
         self._MAX_NR_SHIELDS = total_shields
-        log("Updated limit: " .. self._MAX_NR_SHIELDS)
-        log()
     end)
 
     Hooks:PreHook(EnemyManager, "register_shield", "EnemyManagerRegisterQol", function(self)
@@ -359,6 +427,25 @@ if RequiredScript == "lib/managers/enemymanager" then
         self._shield_disposal_lifetime = time_limit
         self._MAX_NR_SHIELDS = total_shields
     end)
+
+
+
+
+    Hooks:PostHook(EnemyManager, "register_shield", "EnemyManagerPushQol", function(self, shield_unit)
+        if QolTweaks:getShieldPush() then
+            local min_force = QolTweaks:getShieldForceMin()
+            local max_force = QolTweaks:getShieldForceMax()
+            local mass_factor = QolTweaks:getShieldMassFactor()
+            if min_force > max_force then
+                max_force = min_force
+            end
+
+            self:push_shield(shield_unit, min_force, max_force, mass_factor)
+        end
+    end)
+
+
+
 
     Hooks:PreHook(EnemyManager, "unregister_shield", "EnemyManagerPreUnregisterQol", function(self)
         local total_shields = default_total
